@@ -4,24 +4,24 @@ services:
     container_name: biblioteca-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: biblioteca
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    # ports:
+    #   - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
       - biblioteca-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d biblioteca"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   api:
     build:
-      context: ./api
+      context: ./app/backend
       dockerfile: Dockerfile
     container_name: biblioteca-api
     restart: unless-stopped
@@ -29,12 +29,12 @@ services:
       - "3000:3000"
     environment:
       PORT: 3000
-      JWT_SECRET: minha_chave_super_secreta_123
+      JWT_SECRET: ${JWT_SECRET}
       DB_HOST: db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgrespassword
-      DB_NAME: biblioteca
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     depends_on:
       db:
         condition: service_healthy
@@ -43,12 +43,12 @@ services:
 
   frontend:
     build:
-      context: ./api/frontend
+      context: ./app/frontend
       dockerfile: Dockerfile
     container_name: biblioteca-frontend
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8090:80"
     depends_on:
       - api
     networks:
