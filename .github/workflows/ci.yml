@@ -33,3 +33,29 @@ jobs:
 
       - name: Executar testes
         run: npm test
+
+  docker:
+    name: Build das Imagens Docker
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v6
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build da imagem Backend
+        uses: docker/build-push-action@v7
+        with:
+          context: ./app/backend
+          push: false
+          tags: biblioteca-backend:ci
+
+      - name: Build da imagem Frontend
+        uses: docker/build-push-action@v7
+        with:
+          context: ./app/frontend
+          push: false
+          tags: biblioteca-frontend:ci
