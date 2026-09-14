@@ -17,3 +17,9 @@ dist/
 .env
 .DS_Store
 .vscode/
+
+.env
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/

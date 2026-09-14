@@ -9,16 +9,24 @@ terraform {
 
 provider "docker" {}
 
+# ---------------------------------------------------------
+# REDE DO TERRAFORM
+# ---------------------------------------------------------
+
 resource "docker_network" "biblioteca" {
-  name = "biblioteca-net"
+  name = "biblioteca-terraform-net"
 }
+
+# ---------------------------------------------------------
+# IMAGENS
+# ---------------------------------------------------------
 
 resource "docker_image" "postgres" {
   name = "postgres:15-alpine"
 }
 
 resource "docker_image" "api" {
-  name = "biblioteca-api:local"
+  name = "biblioteca-api:terraform"
 
   build {
     context    = "${path.module}/../app/backend"
@@ -27,13 +35,17 @@ resource "docker_image" "api" {
 }
 
 resource "docker_image" "frontend" {
-  name = "biblioteca-frontend:local"
+  name = "biblioteca-frontend:terraform"
 
   build {
     context    = "${path.module}/../app/frontend"
     dockerfile = "Dockerfile"
   }
 }
+
+# ---------------------------------------------------------
+# BANCO DE DADOS
+# ---------------------------------------------------------
 
 resource "docker_container" "db" {
   name  = "biblioteca-db"
@@ -65,6 +77,10 @@ resource "docker_container" "db" {
   */
 }
 
+# ---------------------------------------------------------
+# API
+# ---------------------------------------------------------
+
 resource "docker_container" "api" {
   name  = "biblioteca-api"
   image = docker_image.api.image_id
@@ -94,6 +110,10 @@ resource "docker_container" "api" {
     docker_container.db
   ]
 }
+
+# ---------------------------------------------------------
+# FRONTEND
+# ---------------------------------------------------------
 
 resource "docker_container" "frontend" {
   name  = "biblioteca-frontend"
