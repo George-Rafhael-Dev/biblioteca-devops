@@ -67,6 +67,14 @@ resource "docker_container" "db" {
   networks_advanced {
     name = docker_network.biblioteca.name
   }
+
+  /*
+  ports {
+    internal = 5432
+    external = 5433
+    ip       = "127.0.0.1"
+  }
+  */
 }
 
 # ---------------------------------------------------------
@@ -115,7 +123,7 @@ resource "docker_container" "frontend" {
 
   ports {
     internal = 80
-    external = 8080
+    external = 8090
   }
 
   networks_advanced {
