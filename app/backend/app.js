@@ -51,7 +51,9 @@ async function initDb() {
   }
 }
 
-initDb();
+if (require.main === module) {
+  initDb();
+}
 
 function autenticarToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -148,6 +150,10 @@ app.delete("/livros/:id", autenticarToken, async (req, res) => {
   res.json({ mensagem: "Livro removido com sucesso!" });
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
+
+module.exports = app;
