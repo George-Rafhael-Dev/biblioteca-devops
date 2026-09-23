@@ -11,7 +11,7 @@ on:
 
 jobs:
   backend-test-smoke:
-    name: "Backend:  ${{ matrix.file }}"
+    name: "Matrix: backend-test-Smoke"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,9 +21,9 @@ jobs:
         working-directory: app/backend
     steps:
       - name: Baixar codigo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Configurar Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -31,7 +31,7 @@ jobs:
       - run: npm ci
       - run: npx jest tests/${{ matrix.file }}
 
-  frontend-test-smoke:
+  frontend-test:
     name: "Frontend: ${{ matrix.file }}"
     runs-on: ubuntu-latest
     strategy:
@@ -46,9 +46,9 @@ jobs:
         working-directory: app/frontend
     steps:
       - name: Baixar codigo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Configurar Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -60,21 +60,21 @@ jobs:
     name: Build das Imagens Docker
     runs-on: ubuntu-latest
     needs:
-      - backend-test
+      - backend-test-smoke
       - frontend-test
     steps:
       - name: Baixar codigo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v3
       - name: Build da imagem Backend
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v5
         with:
           context: ./app/backend
           push: false
           tags: biblioteca-backend:ci
       - name: Build da imagem Frontend
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@v5
         with:
           context: ./app/frontend
           push: false
