@@ -11,7 +11,7 @@ on:
 
 jobs:
   backend-test:
-    name: Backend: ${{ matrix.file }}
+    name: "Backend:  ${{ matrix.file }}"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,11 +28,11 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: app/backend/package-lock.json
-        run: npm ci
+      - run: npm ci
       - run: npx jest tests/${{ matrix.file }}
 
   frontend-test:
-    name: Frontend: ${{ matrix.file }}
+    name: "Frontend: ${{ matrix.file }}"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -53,7 +53,7 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: app/frontend/package-lock.json
-        run: npm ci
+      - run: npm ci
       - run: npx jest tests/${{ matrix.file }}
 
   docker:
