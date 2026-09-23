@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  backend-test-Smoke:
+  backend-test-smoke:
     name: "Backend:  ${{ matrix.file }}"
     runs-on: ubuntu-latest
     strategy:
@@ -31,7 +31,7 @@ jobs:
       - run: npm ci
       - run: npx jest tests/${{ matrix.file }}
 
-  frontend-test-Smoke:
+  frontend-test-smoke:
     name: "Frontend: ${{ matrix.file }}"
     runs-on: ubuntu-latest
     strategy:
