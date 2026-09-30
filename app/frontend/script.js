@@ -46,7 +46,7 @@ if (formLogin) {
     const matricula = document.getElementById("matricula").value;
     const senha = document.getElementById("senha").value;
 
-    const res = await fetch(`${API_URL}/usuarios`, {
+    const res = await fetch(`${API_URL}/cadastro`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ matricula, senha })
