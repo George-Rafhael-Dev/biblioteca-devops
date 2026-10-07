@@ -85,5 +85,6 @@ terraform destroy         # se usou Terraform
 
 ## Documentação adicional
 
+- [Relatório de Execução - Sprint](./docs/sprint.md)
 - `docs/API biblioteca.postman_collection.json` — Collection do Postman
 - `docs/seguranca.md` — medidas de segurança e DevSecOps
